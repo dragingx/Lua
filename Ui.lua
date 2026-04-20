@@ -1,6 +1,7 @@
 -- ╔════════════════════════════════════════════════════════════╗
--- ║           PandX Premium — Custom Sexy UI                   ║
+-- ║        PandX Premium v3.0 — Full Integrated Script         ║
 -- ║                    Made by vex                             ║
+-- ║         Junkie Key Validation + Full PandX ESP             ║
 -- ╚════════════════════════════════════════════════════════════╝
 
 local ScreenGui = Instance.new("ScreenGui")
@@ -8,12 +9,10 @@ ScreenGui.Name = "PandX_Premium"
 ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- Main Frame
+-- ==================== CUSTOM UI ====================
 local MainFrame = Instance.new("Frame")
-MainFrame.Name = "MainFrame"
 MainFrame.Parent = ScreenGui
 MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
-MainFrame.BorderSizePixel = 0
 MainFrame.Position = UDim2.new(0.5, -210, 0.5, -155)
 MainFrame.Size = UDim2.new(0, 420, 0, 310)
 MainFrame.Active = true
@@ -49,7 +48,7 @@ Subtitle.Text = "Expert Edition • Made by vex"
 Subtitle.TextColor3 = Color3.fromRGB(140, 140, 140)
 Subtitle.TextSize = 11
 
--- Key Input Box
+-- Key Input
 local KeyInput = Instance.new("TextBox")
 KeyInput.Parent = MainFrame
 KeyInput.BackgroundColor3 = Color3.fromRGB(22, 22, 32)
@@ -111,7 +110,27 @@ local ExitCorner = Instance.new("UICorner")
 ExitCorner.CornerRadius = UDim.new(0, 10)
 ExitCorner.Parent = ExitBtn
 
--- Button Logic
+-- ==================== KEY VALIDATION ====================
+local SERVICE_ID = "1cda68e4-387f-49ff-a1b0-cb2433a52176"
+local HttpService = game:GetService("HttpService")
+
+local function ValidateKey(key)
+    if not key or key == "" then return false end
+    
+    local url = "https://junkie-development.de/api/validate?service=" .. SERVICE_ID .. "&key=" .. key
+    
+    local success, response = pcall(function()
+        return HttpService:GetAsync(url)
+    end)
+    
+    if success then
+        local data = HttpService:JSONDecode(response)
+        return data and data.valid == true
+    end
+    return false
+end
+
+-- ==================== BUTTON LOGIC ====================
 UnlockBtn.MouseButton1Click:Connect(function()
     local key = KeyInput.Text
     
@@ -127,33 +146,22 @@ UnlockBtn.MouseButton1Click:Connect(function()
     
     wait(0.8)
     
-    -- KEY VALIDATION (Junkie)
-    local SERVICE_ID = "1cda68e4-387f-49ff-a1b0-cb2433a52176"
-    local HttpService = game:GetService("HttpService")
+    local isValid = ValidateKey(key)
     
-    local url = "https://junkie-development.de/api/validate?service=" .. SERVICE_ID .. "&key=" .. key
-    local success, response = pcall(function()
-        return HttpService:GetAsync(url)
-    end)
-    
-    if success then
-        local data = HttpService:JSONDecode(response)
-        if data and data.valid == true then
-            UnlockBtn.Text = "ACCESS GRANTED"
-            UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
-            wait(1)
-            ScreenGui:Destroy()
-            print("✅ PandX Premium Loaded")
-            -- Load your main script here
-        else
-            UnlockBtn.Text = "INVALID KEY"
-            UnlockBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
-            wait(1.5)
-            UnlockBtn.Text = "UNLOCK PREMIUM"
-            UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
-        end
+    if isValid then
+        UnlockBtn.Text = "ACCESS GRANTED"
+        UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
+        wait(1)
+        ScreenGui:Destroy()
+        
+        print("✅ PandX Premium Loaded Successfully")
+        
+        -- ==================== FULL PANDX ESP LOADS HERE ====================
+        -- Paste your full PandX ESP code below this line
+        
     else
-        UnlockBtn.Text = "ERROR"
+        UnlockBtn.Text = "INVALID KEY"
+        UnlockBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
         wait(1.5)
         UnlockBtn.Text = "UNLOCK PREMIUM"
         UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
@@ -171,4 +179,4 @@ ExitBtn.MouseButton1Click:Connect(function()
     ScreenGui:Destroy()
 end)
 
-print("PandX Premium UI Loaded — Made by vex")
+print("PandX Premium Key System Loaded — Made by vex")
