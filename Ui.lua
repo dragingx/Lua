@@ -1,97 +1,174 @@
 -- ╔════════════════════════════════════════════════════════════╗
--- ║        PandX Premium v2.0 — Generated Key System           ║
+-- ║           PandX Premium — Custom Sexy UI                   ║
 -- ║                    Made by vex                             ║
--- ║              Using Junkie Development                      ║
 -- ╚════════════════════════════════════════════════════════════╝
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PandX_Premium"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
--- ==================== YOUR SERVICE ID ====================
-local SERVICE_ID = "1cda68e4-387f-49ff-a1b0-cb2433a52176"
+-- Main Frame
+local MainFrame = Instance.new("Frame")
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(12, 12, 20)
+MainFrame.BorderSizePixel = 0
+MainFrame.Position = UDim2.new(0.5, -210, 0.5, -155)
+MainFrame.Size = UDim2.new(0, 420, 0, 310)
+MainFrame.Active = true
+MainFrame.Draggable = true
 
-local HttpService = game:GetService("HttpService")
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 14)
+UICorner.Parent = MainFrame
 
-local function ValidateGeneratedKey(key)
-    if not key or key == "" then 
-        return false 
+local UIStroke = Instance.new("UIStroke")
+UIStroke.Color = Color3.fromRGB(0, 255, 200)
+UIStroke.Thickness = 2.5
+UIStroke.Parent = MainFrame
+
+-- Title
+local Title = Instance.new("TextLabel")
+Title.Parent = MainFrame
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 0, 0, 18)
+Title.Size = UDim2.new(1, 0, 0, 32)
+Title.Font = Enum.Font.GothamBlack
+Title.Text = "PANDX PREMIUM"
+Title.TextColor3 = Color3.fromRGB(0, 255, 200)
+Title.TextSize = 24
+
+local Subtitle = Instance.new("TextLabel")
+Subtitle.Parent = MainFrame
+Subtitle.BackgroundTransparency = 1
+Subtitle.Position = UDim2.new(0, 0, 0, 48)
+Subtitle.Size = UDim2.new(1, 0, 0, 18)
+Subtitle.Font = Enum.Font.Gotham
+Subtitle.Text = "Expert Edition • Made by vex"
+Subtitle.TextColor3 = Color3.fromRGB(140, 140, 140)
+Subtitle.TextSize = 11
+
+-- Key Input Box
+local KeyInput = Instance.new("TextBox")
+KeyInput.Parent = MainFrame
+KeyInput.BackgroundColor3 = Color3.fromRGB(22, 22, 32)
+KeyInput.Position = UDim2.new(0.1, 0, 0.28, 0)
+KeyInput.Size = UDim2.new(0.8, 0, 0, 44)
+KeyInput.Font = Enum.Font.Gotham
+KeyInput.PlaceholderText = "Enter your premium key..."
+KeyInput.Text = ""
+KeyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+KeyInput.TextSize = 14
+KeyInput.ClearTextOnFocus = false
+
+local InputCorner = Instance.new("UICorner")
+InputCorner.CornerRadius = UDim.new(0, 10)
+InputCorner.Parent = KeyInput
+
+-- Unlock Button
+local UnlockBtn = Instance.new("TextButton")
+UnlockBtn.Parent = MainFrame
+UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
+UnlockBtn.Position = UDim2.new(0.15, 0, 0.48, 0)
+UnlockBtn.Size = UDim2.new(0.7, 0, 0, 42)
+UnlockBtn.Font = Enum.Font.GothamBold
+UnlockBtn.Text = "UNLOCK PREMIUM"
+UnlockBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnlockBtn.TextSize = 15
+
+local UnlockCorner = Instance.new("UICorner")
+UnlockCorner.CornerRadius = UDim.new(0, 10)
+UnlockCorner.Parent = UnlockBtn
+
+-- Get Key Button
+local GetKeyBtn = Instance.new("TextButton")
+GetKeyBtn.Parent = MainFrame
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(35, 35, 50)
+GetKeyBtn.Position = UDim2.new(0.15, 0, 0.65, 0)
+GetKeyBtn.Size = UDim2.new(0.7, 0, 0, 36)
+GetKeyBtn.Font = Enum.Font.Gotham
+GetKeyBtn.Text = "GET PREMIUM KEY"
+GetKeyBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
+GetKeyBtn.TextSize = 13
+
+local GetKeyCorner = Instance.new("UICorner")
+GetKeyCorner.CornerRadius = UDim.new(0, 10)
+GetKeyCorner.Parent = GetKeyBtn
+
+-- Exit Button
+local ExitBtn = Instance.new("TextButton")
+ExitBtn.Parent = MainFrame
+ExitBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
+ExitBtn.Position = UDim2.new(0.15, 0, 0.82, 0)
+ExitBtn.Size = UDim2.new(0.7, 0, 0, 34)
+ExitBtn.Font = Enum.Font.GothamBold
+ExitBtn.Text = "EXIT SCRIPT"
+ExitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExitBtn.TextSize = 12
+
+local ExitCorner = Instance.new("UICorner")
+ExitCorner.CornerRadius = UDim.new(0, 10)
+ExitCorner.Parent = ExitBtn
+
+-- Button Logic
+UnlockBtn.MouseButton1Click:Connect(function()
+    local key = KeyInput.Text
+    
+    if key == "" then
+        KeyInput.PlaceholderText = "Please enter a key!"
+        wait(1.5)
+        KeyInput.PlaceholderText = "Enter your premium key..."
+        return
     end
     
-    local url = "https://junkie-development.de/api/validate?service=" .. SERVICE_ID .. "&key=" .. key
+    UnlockBtn.Text = "VERIFYING..."
+    UnlockBtn.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
     
+    wait(0.8)
+    
+    -- KEY VALIDATION (Junkie)
+    local SERVICE_ID = "1cda68e4-387f-49ff-a1b0-cb2433a52176"
+    local HttpService = game:GetService("HttpService")
+    
+    local url = "https://junkie-development.de/api/validate?service=" .. SERVICE_ID .. "&key=" .. key
     local success, response = pcall(function()
         return HttpService:GetAsync(url)
     end)
     
     if success then
         local data = HttpService:JSONDecode(response)
-        return data and data.valid == true
+        if data and data.valid == true then
+            UnlockBtn.Text = "ACCESS GRANTED"
+            UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
+            wait(1)
+            ScreenGui:Destroy()
+            print("✅ PandX Premium Loaded")
+            -- Load your main script here
+        else
+            UnlockBtn.Text = "INVALID KEY"
+            UnlockBtn.BackgroundColor3 = Color3.fromRGB(220, 60, 60)
+            wait(1.5)
+            UnlockBtn.Text = "UNLOCK PREMIUM"
+            UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
+        end
+    else
+        UnlockBtn.Text = "ERROR"
+        wait(1.5)
+        UnlockBtn.Text = "UNLOCK PREMIUM"
+        UnlockBtn.BackgroundColor3 = Color3.fromRGB(0, 220, 140)
     end
-    
-    return false
-end
+end)
 
--- ==================== RAYFIELD UI ====================
-local Window = Rayfield:CreateWindow({
-   Name = "PandX Premium",
-   LoadingTitle = "PandX Premium",
-   LoadingSubtitle = "Made by vex • Generated Keys",
-   ConfigurationSaving = { Enabled = false },
-   Discord = { Enabled = false },
-   KeySystem = false
-})
+GetKeyBtn.MouseButton1Click:Connect(function()
+    setclipboard("https://discord.gg/DM2wxd6K4e")
+    GetKeyBtn.Text = "COPIED!"
+    wait(1.5)
+    GetKeyBtn.Text = "GET PREMIUM KEY"
+end)
 
-local Tab = Window:CreateTab("Premium Access", 4483362748)
+ExitBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
 
-Tab:CreateLabel("Premium Script • Generated Key Required")
-
-Tab:CreateInput({
-   Name = "Enter Your Generated Key",
-   PlaceholderText = "Paste your key here...",
-   RemoveTextAfterFocusLost = false,
-   Callback = function(Text)
-      _G.PandX_Key = Text
-   end
-})
-
-Tab:CreateButton({
-   Name = "Unlock PandX Premium",
-   Callback = function()
-      local key = _G.PandX_Key or ""
-      
-      if key == "" then
-         Rayfield:Notify({ Title = "PandX Premium", Content = "Please enter your key!", Duration = 3 })
-         return
-      end
-      
-      Rayfield:Notify({ Title = "PandX Premium", Content = "Verifying key with Junkie...", Duration = 2 })
-      
-      task.wait(0.8)
-      
-      local isValid = ValidateGeneratedKey(key)
-      
-      if isValid then
-         Rayfield:Notify({ Title = "PandX Premium", Content = "✓ Premium Access Unlocked!", Duration = 3 })
-         task.wait(1)
-         Window:Destroy()
-         
-         print("✅ PandX Premium loaded successfully")
-         
-         -- ==================== LOAD YOUR FULL PANDX ESP HERE ====================
-         -- Paste your full PandX code below this line
-         
-      else
-         Rayfield:Notify({ Title = "PandX Premium", Content = "✗ Invalid or expired key", Duration = 4 })
-      end
-   end
-})
-
-Tab:CreateButton({
-   Name = "Get Premium Key",
-   Callback = function()
-      setclipboard("https://discord.gg/DM2wxd6K4e")
-      Rayfield:Notify({ Title = "PandX Premium", Content = "Discord link copied!", Duration = 3 })
-   end
-})
-
-Tab:CreateLabel("Made by vex • Premium Version")
-Tab:CreateLabel("Each buyer gets their own unique key")
+print("PandX Premium UI Loaded — Made by vex")
